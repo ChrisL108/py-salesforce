@@ -1,19 +1,13 @@
 #import requests
-import pytz,datetime, pandas as pd
-from pandas import DataFrame
+import pytz,datetime #, pandas as pd
+from pandas import DataFrame # pull DataFrame for SOQL() function
 from simple_salesforce import Salesforce
-from Include.config import sb_user
-                            #, pd_user
+from Include.config import sb_user #, pd_user
 
 end = datetime.datetime.now(pytz.UTC) # UTC for SF API
 
-sb_sf = Salesforce(
-    username=sb_user["username"],
-    password=sb_user["password"],
-    security_token=sb_user["security_token"],
-    instance_url=sb_user["instance_url"],
-    domain=sb_user["domain"]
-)
+# simple-salesforce object
+sb_sf = Salesforce(username=sb_user["username"],password=sb_user["password"],security_token=sb_user["security_token"],instance_url=sb_user["instance_url"],domain=sb_user["domain"])
 
 def SOQL(SOQL):
     qry = sb_sf.query(SOQL)
@@ -41,8 +35,9 @@ def SOQL(SOQL):
     df = df.drop('attributes', axis=1)
     return df
 
+
 #sb_sf.Contact.create({'LastName':'McTesterson', 'FirstName': 'Testy', 'Email':'example@example.com', 'Person_Type__c' : "Customer"})
 #tester = sb_sf.query("SELECT Id, Email FROM Contact WHERE LastName = 'McTesterson'")
 #df = pd.DataFrame(tester['records'], columns=tester['records'].keys())
-#test = SOQL("SELECT Id, Name, site_descriptor__c FROM Order")
+test = SOQL("SELECT Id, site_name__c, site_descriptor__c FROM Order")
 
